@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/base/:nome",
-      "destination": "/base/index.html"
-    }
-  ]
-}
