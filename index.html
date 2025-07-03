@@ -8,10 +8,26 @@
   <link rel="icon" href="favicon.ico" />
 </head>
 <body>
-  <div class="container">
-    <h1>🟢 Página de chamada</h1>
-    <h2>Você está tentando chamar: <strong>elbio</strong></h2>
-    <button onclick="alert('Chamando elbio...')">Toque para chamar</button>
+  <div class="container" style="text-align: center; font-family: sans-serif; padding: 40px;">
+    <h1 style="color: #0a66c2;">🟢 Página de chamada</h1>
+    <h2 id="nomeChamado">Você está tentando chamar: <strong>...</strong></h2>
+    <button id="botaoChamar"
+      style="background-color: #0a66c2; color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 16px;">
+      Toque para chamar
+    </button>
   </div>
+
+  <script>
+    // Captura o último fragmento da URL
+    const caminho = window.location.pathname;
+    const partes = caminho.split('/');
+    const nome = decodeURIComponent(partes[partes.length - 1] || 'Visitante');
+
+    // Atualiza o conteúdo visível
+    document.getElementById('nomeChamado').innerHTML = `Você está tentando chamar: <strong>${nome}</strong>`;
+    document.getElementById('botaoChamar').onclick = function() {
+      alert(`Chamando ${nome}...`);
+    };
+  </script>
 </body>
 </html>
