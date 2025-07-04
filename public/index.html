@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toque para chamar</title>
+  <title>Toque para chamar • DoorVi</title>
+  <link rel="icon" href="favicon.ico" />
   <style>
     body {
       font-family: sans-serif;
@@ -59,42 +60,10 @@
 
   <video id="videoPreview" autoplay muted playsinline></video>
 
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const caminho = window.location.pathname;
-      const partes = caminho.split('/').filter(Boolean);
-      const nome = decodeURIComponent(partes[partes.length - 1] || 'Visitante');
+  <!-- Cliente Socket.IO para futura conexão WebRTC -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
-      const url = new URL(window.location.href);
-      const telefone = url.searchParams.get("fone");
-
-      const elementoNome = document.getElementById('nomeChamado');
-      if (elementoNome) {
-        elementoNome.innerHTML = `Você está tentando chamar: <strong>${nome}</strong>`;
-      }
-
-      if (telefone) {
-        const info = document.createElement("p");
-        info.textContent = `Número para chamada: +${telefone}`;
-        document.body.appendChild(info);
-      }
-
-      const botao = document.getElementById('botaoChamar');
-      if (botao) {
-        botao.onclick = async () => {
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            const video = document.getElementById('videoPreview');
-            if (video) {
-              video.srcObject = stream;
-            }
-          } catch (err) {
-            alert("Permissão negada ou erro ao acessar câmera/microfone.");
-            console.error("Erro ao acessar mídia:", err);
-          }
-        };
-      }
-    });
-  </script>
+  <!-- Seu JavaScript principal -->
+  <script src="index.js"></script>
 </body>
 </html>
