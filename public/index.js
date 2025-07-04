@@ -1,11 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   // Captura o caminho da URL
   const caminho = window.location.pathname;
-
-  // Divide a URL por barras e remove partes vazias
   const partes = caminho.split('/').filter(Boolean);
-
-  // Pega o último segmento como nome
   const nome = decodeURIComponent(partes[partes.length - 1] || 'Visitante');
 
   // Insere o nome na página
@@ -14,11 +10,20 @@ window.addEventListener('DOMContentLoaded', () => {
     elementoNome.innerHTML = `Você está tentando chamar: <strong>${nome}</strong>`;
   }
 
-  // Adiciona ação ao botão
+  // Botão de chamada
   const botao = document.getElementById('botaoChamar');
   if (botao) {
-    botao.onclick = () => {
-      alert(`Chamando ${nome}...`);
+    botao.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        const video = document.getElementById('videoPreview');
+        if (video) {
+          video.srcObject = stream;
+        }
+      } catch (err) {
+        alert("Permissão negada ou erro ao acessar câmera/microfone.");
+        console.error("Erro ao acessar mídia:", err);
+      }
     };
   }
 });
