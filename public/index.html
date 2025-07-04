@@ -9,13 +9,46 @@
       font-family: sans-serif;
       text-align: center;
       margin-top: 60px;
+      background-color: #f9f9f9;
     }
-    video {
+
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #555;
+    }
+
+    p {
+      font-size: 16px;
+      color: #444;
+      margin-top: 8px;
+    }
+
+    button {
       margin-top: 20px;
-      width: 300px;
-      height: auto;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: teal;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #007b7b;
+    }
+
+    video {
+      margin-top: 30px;
+      width: 320px;
       border: 2px solid #ccc;
       border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
@@ -27,19 +60,39 @@
   <video id="videoPreview" autoplay muted playsinline></video>
 
   <script>
-    // Pega o nome da URL
-    const nome = window.location.pathname.replace("/", "");
-    document.getElementById("nomeChamado").textContent = `Você está tentando chamar: ${nome}`;
+    window.addEventListener('DOMContentLoaded', () => {
+      const caminho = window.location.pathname;
+      const partes = caminho.split('/').filter(Boolean);
+      const nome = decodeURIComponent(partes[partes.length - 1] || 'Visitante');
 
-    // Botão de chamada
-    document.getElementById("botaoChamar").addEventListener("click", async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        const video = document.getElementById("videoPreview");
-        video.srcObject = stream;
-      } catch (err) {
-        alert("Permissão negada ou erro ao acessar câmera/microfone.");
-        console.error(err);
+      const url = new URL(window.location.href);
+      const telefone = url.searchParams.get("fone");
+
+      const elementoNome = document.getElementById('nomeChamado');
+      if (elementoNome) {
+        elementoNome.innerHTML = `Você está tentando chamar: <strong>${nome}</strong>`;
+      }
+
+      if (telefone) {
+        const info = document.createElement("p");
+        info.textContent = `Número para chamada: +${telefone}`;
+        document.body.appendChild(info);
+      }
+
+      const botao = document.getElementById('botaoChamar');
+      if (botao) {
+        botao.onclick = async () => {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const video = document.getElementById('videoPreview');
+            if (video) {
+              video.srcObject = stream;
+            }
+          } catch (err) {
+            alert("Permissão negada ou erro ao acessar câmera/microfone.");
+            console.error("Erro ao acessar mídia:", err);
+          }
+        };
       }
     });
   </script>
