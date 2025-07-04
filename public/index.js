@@ -1,16 +1,27 @@
 window.addEventListener('DOMContentLoaded', () => {
-  // Captura o caminho da URL
+  // 🧩 Captura o caminho da URL (ex: /eduardo)
   const caminho = window.location.pathname;
   const partes = caminho.split('/').filter(Boolean);
   const nome = decodeURIComponent(partes[partes.length - 1] || 'Visitante');
 
-  // Insere o nome na página
+  // 🔍 Pega os parâmetros da URL (ex: ?fone=...)
+  const url = new URL(window.location.href);
+  const telefone = url.searchParams.get("fone");
+
+  // 🖊️ Exibe o nome na página
   const elementoNome = document.getElementById('nomeChamado');
   if (elementoNome) {
     elementoNome.innerHTML = `Você está tentando chamar: <strong>${nome}</strong>`;
   }
 
-  // Botão de chamada
+  // ☎️ Exibe o telefone, se existir
+  if (telefone) {
+    const info = document.createElement("p");
+    info.textContent = `Número para chamada: +${telefone}`;
+    document.body.appendChild(info);
+  }
+
+  // 🎥 Botão de chamada ativa câmera e microfone
   const botao = document.getElementById('botaoChamar');
   if (botao) {
     botao.onclick = async () => {
