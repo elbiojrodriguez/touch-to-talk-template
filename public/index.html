@@ -4,15 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Toque para chamar</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 60px;
+    }
+    video {
+      margin-top: 20px;
+      width: 300px;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container" style="text-align: center; font-family: sans-serif; margin-top: 80px;">
-    <h1>🟢 Página de chamada</h1>
-    <h2 id="nomeChamado"></h2>
-    <button id="botaoChamar">Toque para chamar</button>
-  </div>
+  <h1>🟢 Página de chamada</h1>
+  <h2 id="nomeChamado"></h2>
+  <button id="botaoChamar">Toque para chamar</button>
 
-  <script src="index.js"></script>
+  <video id="videoPreview" autoplay muted playsinline></video>
+
+  <script>
+    // Pega o nome da URL
+    const nome = window.location.pathname.replace("/", "");
+    document.getElementById("nomeChamado").textContent = `Você está tentando chamar: ${nome}`;
+
+    // Botão de chamada
+    document.getElementById("botaoChamar").addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        const video = document.getElementById("videoPreview");
+        video.srcObject = stream;
+      } catch (err) {
+        alert("Permissão negada ou erro ao acessar câmera/microfone.");
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
